@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NodeJS WS Chat</title>
+    <style>
+        *,
+*::after,
+*::before{
+    box-sizing: border-box;
+}
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+
+
+body{
+    margin: 0;
+    padding: 0;
+    font: 16px 'Montserrat', sans-serif;
+    font-weight: 500;
+}
+.container{
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background: linear-gradient(0deg,#f4edec,#cde9ef);
+    background: linear-gradient(19deg, #21D4FD 0%, #B721FF 100%);
+}
+.chat{
+    width: 700px;
+    height: 600px;
+    border-radius: 15px;
+    background: #fff;
+    padding: 20px;
+    box-shadow: 0px 15px 35px -5px rgb(50 88 130 / 32%);
+}
+.chat__navbar .title{
+    font-size: 22px;
+    font-weight: bold;
+    font-family: "Poppins";
+}
+.chat__users{
+    display: flex;
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    margin-top: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+.chat-user{
+    background: rgb(63 81 181 / 17%);
+    color: #3f51b5;
+    padding: 5px 12px;
+    border-radius: 10px;
+    position: relative;
+    padding-left: 30px;
+    box-shadow: 3px 1px 6px rgb(63 81 181 / 13%);
+}
+.chat-user::before{
+    content: attr(data-avatar);
+    background: rgb(63 81 181);
+    color: #fff;
+    padding: 5px;
+    border-radius: 100%;
+    width: 24px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    box-shadow: 3px 1px 6px rgb(63 81 181 / 38%);
+}
+.chat__messages{
+    background: #ececec;
+    height: calc(100% - 150px);
+    height: calc(100% - 90px);
+    border-radius: 10px;
+    margin-top: 10px;
+    padding: 20px;
+    overflow: auto;
+}
+.chat__messages .chat-message{
+    background: #2196f3;
+    color: #fff;
+    width: fit-content;
+    border-radius: 10px;
+    padding: 10px;
+    /* border-bottom-left-radius: 0px; */
+    font-size: 14px;
+    margin-bottom: 10px;
+    box-shadow: rgba(35, 68, 101, 0.1) 0px 4px 4px, rgba(35, 68, 101, 0.1) 0px 4px 16px;
+}
+.chat__messages .chat-message .message:after {
+    content: attr(data-date);
+    text-align: right;
+    padding-left: 20px;
+    font-size: 11px;
+    opacity: .7;
+}
+/* .chat__messages .chat-message:nth-child(odd) {
+    
+}
+.chat__messages .chat-message:nth-child(even) {
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 0px;
+    float: right;
+} */
+.chat__messages .chat-message .user::before{
+    content: '';
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48px' height='48px' viewBox='0 0 48 48' version='1.1'  xmlns:xlink='http://www.w3.org/1999/xlink'%3E%0A    %0A    %3Cg  stroke='none' stroke-width='1' fill='%23FFFFFF' fill-rule='evenodd'%3E%0A        %3Cg  fill='%23FFFFFF' fill-rule='nonzero'%3E%0A            %3Cpath d='M35.7502,28 C38.0276853,28 39.8876578,29.7909151 39.9950978,32.0427546 L40,32.2487 L40,33 C40,36.7555 38.0583,39.5669 35.0798,41.3802 C32.1509,43.1633 28.2139,44 24,44 C19.7861,44 15.8491,43.1633 12.9202,41.3802 C10.0319285,39.6218485 8.11862909,36.9249713 8.00532378,33.3388068 L8,33 L8,32.2489 C8,29.9703471 9.79294995,28.1122272 12.0440313,28.0048972 L12.2499,28 L35.7502,28 Z M35.7502,30.5 L12.2499,30.5 C11.331345,30.5 10.5787597,31.2066575 10.5057976,32.1054618 L10.5,32.2489 L10.5,33 C10.5,35.7444 11.8602,37.8081 14.2202,39.2448 C16.6297,40.7117 20.0677,41.5 24,41.5 C27.9323,41.5 31.3703,40.7117 33.7798,39.2448 C36.0555143,37.8594107 37.4015676,35.8910074 37.4948116,33.2914406 L37.5,33 L37.5,32.2488 C37.5,31.331195 36.7934328,30.5787475 35.8937801,30.5057968 L35.7502,30.5 Z M24,4 C29.5228,4 34,8.47715 34,14 C34,19.5228 29.5228,24 24,24 C18.4772,24 14,19.5228 14,14 C14,8.47715 18.4772,4 24,4 Z M24,6.5 C19.8579,6.5 16.5,9.85786 16.5,14 C16.5,18.1421 19.8579,21.5 24,21.5 C28.1421,21.5 31.5,18.1421 31.5,14 C31.5,9.85786 28.1421,6.5 24,6.5 Z' %3E%3C/path%3E%0A        %3C/g%3E%0A    %3C/g%3E%0A%3C/svg%3E");
+    width: 18px;
+    height: 18px;
+    background-size: 18px;
+    margin-right: 4px;
+}
+.chat__messages .chat-message .user{
+    opacity: .9;
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+}
+.chat__footer{
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+}
+.chat-input{
+    border: 1px solid #ddd;
+    box-shadow: 3px 1px 6px rgb(63 81 181 / 13%);
+    padding: 10px;
+    border-radius: 5px;
+    outline: none;
+    font: 15px "Montserrat", sans-serif;
+    width: calc(100% - 5px);
+    margin-right: 5px;
+}
+.chat__footer button{
+    border: 1px solid #ddd;
+    box-shadow: 3px 1px 6px rgb(63 81 181 / 13%);
+    border-radius: 5px;
+    outline: none;
+    font: 15px "Montserrat", sans-serif;
+    background: #fff;
+    cursor: pointer;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.chat__footer button svg{
+    height: 22px;
+}
+#name{
+    width: 150px;
+}
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="chat">
+            <div class="chat__navbar">
+                <div class="title">Real time chat collaborate on NodeJS (Express + MYSQL)</div>
+            </div>
+
+            <!-- <div class="chat__users">
+                <div class="chat-user" data-avatar="D">DanRotaru</div>
+            </div> -->
+
+            <div class="chat__messages"></div>
+            <div class="chat__footer">
+                <input type="text" id="name" class="chat-input" placeholder="Your Name"/>
+                <input type="text" id="msg" class="chat-input" placeholder="Your Message"/>
+                <button onclick="send()">
+                    <svg width="28px" height="28px" viewBox="0 0 28 28" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                        <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                            <g id="ic_fluent_send_28_regular" fill="#212121" fill-rule="nonzero">
+                                <path d="M3.78963301,2.77233335 L24.8609339,12.8499121 C25.4837277,13.1477699 25.7471402,13.8941055 25.4492823,14.5168992 C25.326107,14.7744476 25.1184823,14.9820723 24.8609339,15.1052476 L3.78963301,25.1828263 C3.16683929,25.4806842 2.42050372,25.2172716 2.12264586,24.5944779 C1.99321184,24.3238431 1.96542524,24.015685 2.04435886,23.7262618 L4.7030903,13.9775798 L2.04435886,4.22889788 C1.8627142,3.56286745 2.25538645,2.87569101 2.92141688,2.69404635 C3.21084015,2.61511273 3.51899823,2.64289932 3.78963301,2.77233335 Z M3.63522914,4.36121177 L6.058,13.249 L17,13.25 C17.3796958,13.25 17.693491,13.5321539 17.7431534,13.8982294 L17.75,14 C17.75,14.3796958 17.4678461,14.693491 17.1017706,14.7431534 L17,14.75 L6.046,14.749 L3.63522914,23.5939479 L23.7421805,13.9775798 L3.63522914,4.36121177 Z" id="🎨-Color"></path>
+                            </g>
+                        </g>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        function escapeHtml(text) {
+        return text.replace(/&/g, "&amp;").replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+      }
+        function add(login, text, date){
+            document.querySelector('.chat__messages').innerHTML += `
+            <div class="chat-message">
+                <div class="user">${login}</div>
+                <div class="message" data-date="${date}">${escapeHtml(text)}</div>
+            </div>`;
+        }
+        // Create WebSocket connection.
+        const socket = new WebSocket('ws://185.64.236.180:3000');
+    
+        // Connection opened
+        socket.addEventListener('open', function (event) {
+            console.log('Connected to WS Server')
+        });
+    
+        const getTime = (unix) => {
+            let d = new Date();
+            if(unix) d = new Date(unix*1000);
+            let h = d.getHours();
+            let m = d.getMinutes();
+            if(h < 10) h = "0"+h;
+            if(m < 10) m = "0"+m;
+            return res = h+':'+m;
+        }
+
+        // Listen for messages
+        socket.addEventListener('message', function (event) {
+            console.log(event);
+            console.log('Message from server ', event.data);
+            
+            let msg1 = event.data.split("=:=:=");
+            let login = msg1[0];
+            let msg = msg1[1];
+            let date = msg1[2];
+            add(login, msg, getTime(date));
+        });
+
+       
+    
+        const send = () => {
+            let login = document.querySelector("#name").value;
+            let text = document.querySelector("#msg").value;
+            socket.send(`${login}=:=:=${text}`);
+            document.querySelector("#msg").value = '';
+            document.querySelector("#msg").focus();
+            add(login, text, getTime());
+        }
+    </script>
+</body>
+</html>

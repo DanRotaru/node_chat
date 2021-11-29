@@ -1,0 +1,19 @@
+{
+  "name": "web-sockets",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "express-ws": "^4.0.0",
+    "medoo.js": "^1.1.13",
+    "nodemon": "^2.0.7",
+    "ws": "^7.3.0"
+  }
+}
