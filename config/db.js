@@ -1,19 +1,33 @@
-const Medoo = require('medoo.js');
-const Setting = {
+const mysql = require('mysql');
+var conn = mysql.createConnection({
     host: 'localhost',
-    port: 3306,
-    database: 'node_chat',
     user: 'root',
-    password: ''
+    password: '',
+    database: 'node_chat'
+});
+
+
+
+function createConnection(callback){
+    if(conn.state == 'disconnected'){
+        conn.connect(function(err) {
+            if (err) throw err;
+            if(callback) callback(true);
+            
+        }); 
+    }
+    else{
+        if(callback) callback(true);
+    }
+    
 }
 
-var db;
+createConnection();
 
-async function createConnection() {
-    db = new Medoo(Setting);
-    await db.setup();
+function getMessages(callback){
+    conn.query("SELECT count(id) as c FROM chat", function (error, results, fields) {
+        if(callback) callback(results[0].c);
+    });
 }
 
-createConnection()
-
-module.exports = db;
+module.exports = {conn, createConnection, getMessages}

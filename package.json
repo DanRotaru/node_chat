@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index"
+    "start": "nodemon index",
+    "test": "jest"
   },
   "keywords": [],
   "author": "",
@@ -12,8 +13,12 @@
   "dependencies": {
     "express": "^4.17.1",
     "express-ws": "^4.0.0",
-    "medoo.js": "^1.1.13",
+    "mysql": "^2.18.1",
     "nodemon": "^2.0.7",
     "ws": "^7.3.0"
+  },
+  "devDependencies": {
+    "jest": "^27.4.3",
+    "supertest": "^6.1.6"
   }
 }
