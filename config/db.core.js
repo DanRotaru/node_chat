@@ -1,29 +1,22 @@
-var db = require('./db');
+var {conn} = require('./db');
 
-async function select(from, what, where, callback) {
-    let res = await db.select(from, what, where)
-
-    if (callback !== undefined) callback(res);
-}
-async function insert(msg, login, ip){
-    let res = await db.insert("chat", {
-        login: login,
-        text: msg,
-        ip: ip,
-        date: Math.floor(Date.now() / 1000)
-    })
-}
-async function update(table, what, where){
-    let res = await db.update(table, what, where);
+function query(query, callback){
+    conn.query(query, function (error, results, fields) {
+        if(callback) callback(results);
+        else return results;
+    });
 }
 
-async function truncate(table){
-    await db.query(`TRUNCATE TABLE ${table}`);
+function insert(where, what, callback){
+    var query = conn.query('INSERT INTO '+where+' SET ?', what, function (error, results, fields) {
+    if (error) throw error;
+        if(callback) callback(fields);
+        else return fields;
+    });
 }
+
 
 module.exports = {
-    select: select,
-    insert: insert,
-    update: update,
-    truncate: truncate
+    query: query,
+    insert: insert
 }
