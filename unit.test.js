@@ -46,7 +46,6 @@ test('Check if database is connected', done => {
 
 test('Max 100 chat messages', done => {
     function callback(data) {
-        jest.useFakeTimers();
         expect(data).toBeLessThan(100);
         done();
     }
