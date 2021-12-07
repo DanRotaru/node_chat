@@ -7,6 +7,14 @@ const {
 const request = require("supertest");
 const app = require("./index");
 
+describe('jest-junit', () => {
+    describe('positive numbers', () => {
+      it('should add up', () => {
+        expect(1 + 2).toBe(3);
+      });
+    });
+  });
+
 test("GET / method statusCode should be 200", done => {
     request(app.app)
     .get("/")

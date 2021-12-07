@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="Test Suite" tests="6" failures="0" errors="0" time="1.087">
+  <testsuite name="jest-junit" errors="0" failures="0" skipped="0" timestamp="2021-12-07T07:10:06" time="0.792" tests="6">
+    <testcase classname="jest-junit positive numbers should add up" name="jest-junit positive numbers should add up" time="0.001">
+    </testcase>
+    <testcase classname=" GET / method statusCode should be 200" name=" GET / method statusCode should be 200" time="0.044">
+    </testcase>
+    <testcase classname=" GET /database statusCode should be 200" name=" GET /database statusCode should be 200" time="0.007">
+    </testcase>
+    <testcase classname=" Start Web Socket Server" name=" Start Web Socket Server" time="0">
+    </testcase>
+    <testcase classname=" Check if database is connected" name=" Check if database is connected" time="0.001">
+    </testcase>
+    <testcase classname=" Max 100 chat messages" name=" Max 100 chat messages" time="0.001">
+    </testcase>
+  </testsuite>
+</testsuites>
