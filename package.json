@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index",
+    "start": "node index",
     "test": "jest --ci --testResultsProcessor=jest-junit"
   },
   "jest": {
@@ -24,6 +24,7 @@
     "jest-junit": "^13.0.0",
     "mysql": "^2.18.1",
     "nodemon": "^2.0.7",
+    "dotenv": "^10.0.0",
     "ws": "^7.3.0"
   },
   "devDependencies": {

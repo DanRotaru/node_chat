@@ -46,6 +46,19 @@ pipeline {
                 }
             }
         }
+        stage("Continuous Delivery") {
+            steps {
+                echo "Push all to DockerHub"
+                bat 'docker push danrotaru/tidpp4:latest'
+            }
+        }
+
+        stage("Continuous Deployment") {
+            steps {
+                echo "Push all to DockerHub"
+                bat 'docker build . -t danrotaru/tidpp4 && docker-compose up'
+            }
+        }
     }
 
 

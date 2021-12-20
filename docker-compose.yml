@@ -1,0 +1,52 @@
+version: '1.0.0'
+services:
+  nodejs:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    image: danrotaru/tidpp4
+    depends_on:
+      - mysql
+    networks:
+      - frontend
+      - backend
+    environment:
+      - MYSQL_HOST=tidpp-mysql-app
+      - MYSQL_USER=dan
+      - MYSQL_PASS=dan
+      - MYSQL_DB=node_chat
+    volumes:
+      - .:/public
+    ports:
+      - "30001:3000"
+    container_name: tidpp-nodejs-app
+
+  mysql:
+    image: mysql:5.7
+    networks:
+        - backend
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_USER=dan
+      - MYSQL_PASSWORD=dan
+      - MYSQL_DATABASE=node_chat
+    container_name: tidpp-mysql-app
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    depends_on:
+      - mysql
+    networks:
+      - backend
+    ports:
+      - "30002:80"
+    environment:
+      - PMA_HOST=tidpp-mysql-app
+      - PMA_PORT=3306
+    volumes:
+      - /sessions
+    container_name: tidpp-phpmyadmin-app
+
+networks:
+  frontend:
+  backend:
