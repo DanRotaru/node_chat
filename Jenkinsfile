@@ -55,7 +55,7 @@ pipeline {
 
         stage("Continuous Deployment") {
             steps {
-                echo "Push all to DockerHub"
+                echo "Docker Build & docker-compose"
                 bat 'docker build . -t danrotaru/tidpp4 && docker-compose up'
             }
         }
